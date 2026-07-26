@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+
+# Next.js and build outputs
+.next/
+out/
+dist/
+build/
+
+# Test and coverage outputs
+coverage/
+playwright-report/
+test-results/
+blob-report/
+
+# Tool caches
+.cache/
+.turbo/
+*.tsbuildinfo
+.eslintcache
+
+# Environment files (keep the example template)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+.tmp/
+tmp/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+
+# Local databases and user data
+*.db
+*.sqlite
+*.sqlite3

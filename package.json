@@ -1,0 +1,37 @@
+{
+  "name": "menghuan",
+  "version": "0.1.0",
+  "private": true,
+  "description": "梦幻（Menghuan）全新项目的阶段1工程质量基线。",
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": ">=24.0.0 <25"
+  },
+  "scripts": {
+    "dev": "pnpm dev:web",
+    "dev:web": "pnpm --filter @menghuan/config build && pnpm --filter @menghuan/web dev",
+    "build": "pnpm --filter @menghuan/config build && pnpm --filter @menghuan/sync-worker build && pnpm --filter @menghuan/web build",
+    "lint": "eslint .",
+    "typecheck": "pnpm --filter @menghuan/config build && pnpm --filter @menghuan/sync-worker typecheck && pnpm --filter @menghuan/web typecheck",
+    "test": "vitest run",
+    "test:e2e": "pnpm --filter @menghuan/config build && playwright test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "health:worker": "pnpm --silent --filter @menghuan/config build && pnpm --silent --filter @menghuan/sync-worker exec tsx src/cli/health.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "@next/eslint-plugin-next": "16.2.11",
+    "@playwright/test": "1.61.1",
+    "@types/node": "24.13.3",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.5",
+    "globals": "17.7.0",
+    "prettier": "3.9.6",
+    "tsx": "4.23.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.65.0",
+    "vitest": "4.1.10"
+  }
+}

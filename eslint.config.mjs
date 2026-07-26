@@ -1,0 +1,48 @@
+import js from "@eslint/js";
+import nextPlugin from "@next/eslint-plugin-next";
+import globals from "globals";
+import tseslint from "typescript-eslint";
+
+export default tseslint.config(
+  {
+    ignores: [
+      "**/.next/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "**/node_modules/**",
+      "playwright-report/**",
+      "test-results/**",
+    ],
+  },
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    files: ["apps/web/**/*.{ts,tsx}"],
+    plugins: {
+      "@next/next": nextPlugin,
+    },
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+    rules: {
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs["core-web-vitals"].rules,
+    },
+  },
+  {
+    files: [
+      "**/*.config.{js,mjs,cjs,ts}",
+      "apps/sync-worker/**/*.ts",
+      "packages/config/**/*.ts",
+      "tests/**/*.ts",
+    ],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+);
