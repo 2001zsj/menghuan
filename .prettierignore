@@ -1,0 +1,12 @@
+PROJECT_CHARTER.md
+TECHNICAL_PROPOSAL.md
+DATA_MODEL_PROPOSAL.md
+PROJECT_ROADMAP.md
+DEVELOPMENT_RULES.md
+node_modules
+.next
+dist
+coverage
+playwright-report
+test-results
+pnpm-lock.yaml
