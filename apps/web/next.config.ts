@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  transpilePackages: ["@menghuan/config"],
+  transpilePackages: ["@menghuan/ui"],
 };
 
 export default nextConfig;

@@ -1,48 +1,50 @@
 # 梦幻（Menghuan）
 
-梦幻是一个完全独立、从零建设的新项目，不继承任何旧动漫网站、旧组件、旧数据模型、旧解析器、旧设计系统、旧部署配置或Git历史。
+梦幻是一个完全独立、从零开发的动漫资料、放送信息与外部资源聚合项目。禁止使用任何旧动漫项目、Dimension Lab、次元生成局或其他项目的代码、组件、样式、模型、解析器和Git历史。
 
 ## 当前阶段
 
-当前仅完成 **Stage 1——全新工程初始化与质量基线**。根页面和健康页面不是正式动漫网站页面。
+当前源码为**Stage 2：全新设计系统、响应式导航和Mock页面骨架**。
 
-## 运行要求
+阶段2只使用10部完全虚构的Mock作品验证视觉、信息架构、本地偏好和本地收藏。它不接入真实来源，不代表正式数据库模型。
 
-- Node.js 24 LTS（仓库通过 `.nvmrc` 和 `engines.node` 锁定Node 24主版本）
-- pnpm 10.34.5（以根 `package.json` 的 `packageManager` 为准）
+## 环境要求
 
-## 安装
+- Node.js 24 LTS
+- pnpm 10.34.5
 
-```text
-corepack enable
-corepack prepare pnpm@10.34.5 --activate
-pnpm install --frozen-lockfile
+```powershell
+corepack pnpm@10.34.5 install
 ```
 
-首次从没有锁文件的开发草稿生成依赖锁时使用 `pnpm install`；正式基线应优先使用冻结锁文件安装。
+## 开发
 
-## 开发与构建
-
-```text
+```powershell
 pnpm dev
-pnpm dev:web
-pnpm build
 ```
 
-Web默认运行于 `http://localhost:3000`。
+默认Web地址为`http://localhost:3000`。
 
-## 健康检查
+主要Mock路由：
 
-- 根状态页：`/`
-- Web健康页：`/health`
-- Web健康接口：`/api/health`
-- Worker一次性健康命令：`pnpm health:worker`
+- `/`
+- `/today`
+- `/schedule`
+- `/season`
+- `/library`
+- `/anime/[slug]`
+- `/favorites`
 
-Worker健康命令只输出结构化JSON并退出，不会连接数据库、请求外部网站或启动后台常驻进程。
+健康能力继续保留：
 
-## 质量命令
+- `/health`
+- `/api/health`
 
-```text
+## 检查
+
+```powershell
+pnpm install
+pnpm install --frozen-lockfile
 pnpm format:check
 pnpm lint
 pnpm typecheck
@@ -52,30 +54,24 @@ pnpm health:worker
 pnpm test:e2e
 ```
 
-Playwright通常会管理自己的Chromium。受控环境也可以通过 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` 指向已安装的Chromium可执行文件。
+## 工作区
 
-## 环境变量
+- `apps/web`：Next.js App Router页面、Mock数据、本地偏好和收藏。
+- `apps/sync-worker`：Stage 1一次性健康Worker，未接入任何来源。
+- `packages/config`：服务端环境变量校验。
+- `packages/ui`：Stage 2全新设计令牌与基础组件。
+- `tests/e2e`：健康与Stage 2用户流程冒烟测试。
+- `docs/architecture`：工程基线和设计系统说明。
 
-根目录 `.env.example` 是统一模板。Web本地开发可复制为 `apps/web/.env.local`，Worker可通过PowerShell或进程环境变量设置同名配置。阶段1仅允许：
+## 本地数据
 
-- `APP_ENV=local | preview | production`
-- `NEXT_PUBLIC_SITE_URL=<合法URL>`
-- `LOG_LEVEL=trace | debug | info | warn | error | fatal`
+- UI偏好：`menghuan:ui-preferences:v1`
+- 收藏：`menghuan:favorites:v1`
 
-阶段1不存在数据库、Redis、认证、Session、YUC、AGE或部署令牌配置。
-
-## 工作区结构
-
-- `apps/web`：Next.js App Router健康Web，包名 `@menghuan/web`
-- `apps/sync-worker`：一次性Node.js Worker健康骨架，包名 `@menghuan/sync-worker`
-- `packages/config`：Web与Worker共享的Zod环境校验，包名 `@menghuan/config`
-- `tests/e2e`：Playwright健康冒烟测试
-- `docs/architecture`：工程基线说明
+数据只保存在当前浏览器。没有账户、登录、Session、多设备同步或服务端用户数据API。
 
 ## 当前明确未实现
 
-阶段1没有动漫业务页面、导航、设计系统、动漫图片、搜索、收藏、观看进度、账户、数据库、同步调度器、抓取器、YUC或AGE接入、Docker、CI工作流和部署配置。
+没有真实动漫资料、真实海报、YUC、AGE、外部抓取、PostgreSQL、Drizzle、Redis、正式搜索、最近浏览、观看进度、播放器、播放线路、下载入口、Docker、CI或部署配置。
 
-## 协作边界
-
-开发ChatGPT只生成和检查代码包，不操作远程GitHub、不创建提交、不部署。GitHub同步、提交、标签和预览或生产部署由Codex在项目总指挥验收后执行。
+GitHub提交、推送和部署由Codex在项目总指挥验收后执行；开发ChatGPT不得操作远程GitHub或部署。

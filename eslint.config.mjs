@@ -21,6 +21,11 @@ export default tseslint.config(
     plugins: {
       "@next/next": nextPlugin,
     },
+    settings: {
+      next: {
+        rootDir: "apps/web/",
+      },
+    },
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -30,6 +35,14 @@ export default tseslint.config(
     rules: {
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs["core-web-vitals"].rules,
+    },
+  },
+  {
+    files: ["packages/ui/**/*.{ts,tsx}"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
     },
   },
   {
