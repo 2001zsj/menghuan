@@ -2,7 +2,7 @@
   "name": "menghuan",
   "version": "0.1.0",
   "private": true,
-  "description": "梦幻（Menghuan）全新项目的阶段1工程质量基线。",
+  "description": "梦幻（Menghuan）阶段2设计系统、响应式导航与Mock页面骨架。",
   "packageManager": "pnpm@10.34.5",
   "engines": {
     "node": ">=24.0.0 <25"
@@ -12,7 +12,7 @@
     "dev:web": "pnpm --filter @menghuan/config build && pnpm --filter @menghuan/web dev",
     "build": "pnpm --filter @menghuan/config build && pnpm --filter @menghuan/sync-worker build && pnpm --filter @menghuan/web build",
     "lint": "eslint .",
-    "typecheck": "pnpm --filter @menghuan/config build && pnpm --filter @menghuan/sync-worker typecheck && pnpm --filter @menghuan/web typecheck",
+    "typecheck": "pnpm --filter @menghuan/config build && pnpm --filter @menghuan/ui typecheck && pnpm --filter @menghuan/sync-worker typecheck && pnpm --filter @menghuan/web typecheck",
     "test": "vitest run",
     "test:e2e": "pnpm --filter @menghuan/config build && playwright test",
     "format": "prettier --write .",
