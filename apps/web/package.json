@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@menghuan/config": "workspace:*",
+    "@menghuan/database": "workspace:*",
+    "@menghuan/domain": "workspace:*",
     "@menghuan/ui": "workspace:*",
     "next": "16.2.11",
     "react": "19.2.8",

@@ -50,6 +50,8 @@ export default tseslint.config(
       "**/*.config.{js,mjs,cjs,ts}",
       "apps/sync-worker/**/*.ts",
       "packages/config/**/*.ts",
+      "packages/domain/**/*.ts",
+      "packages/database/**/*.ts",
       "tests/**/*.ts",
     ],
     languageOptions: {

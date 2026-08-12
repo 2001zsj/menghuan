@@ -3,22 +3,25 @@ import { Card, Container, SectionHeader } from "@menghuan/ui";
 import { AnimeCardGrid } from "@/components/anime-card-grid";
 import { BroadcastList } from "@/components/broadcast-list";
 import { MockBanner } from "@/components/mock-banner";
-import { stage2MockAnime } from "@/mocks/stage2";
+import { getAnimeRepository } from "@/server/anime-repository";
 
-export default function HomePage() {
-  const updated = stage2MockAnime.filter((anime) => anime.broadcast.state === "updated");
-  const current = stage2MockAnime
-    .filter((anime) => anime.season.year === 2026 && anime.season.quarter === "夏")
+export default async function HomePage() {
+  const repository = await getAnimeRepository();
+  const records = await repository.listAnime();
+  const updated = records.filter((item) => item.broadcast?.availabilityState === "updated");
+  const current = records
+    .filter((item) => item.season?.year === 2026 && item.season.quarter === "summer")
     .slice(0, 4);
+
   return (
     <Container className="page-shell">
       <MockBanner />
       <section className="hero" aria-labelledby="home-title">
         <div className="hero__content">
-          <span className="hero__eyebrow">Dream Archive / Stage 2</span>
+          <span className="hero__eyebrow">Dream Archive / Stage 3</span>
           <h1 id="home-title">在安静的档案中，找到下一部想看的作品。</h1>
           <p>
-            梦幻正在建立全新的动漫资料与放送发现界面。本阶段仅使用完全虚构的Mock内容验证视觉、布局与交互结构。
+            梦幻正在验证统一领域与Repository边界。本阶段继续只使用完全虚构内容，页面视觉和本地交互保持不变。
           </p>
           <div className="hero__actions">
             <Link href="/today">查看今日更新</Link>
@@ -40,7 +43,7 @@ export default function HomePage() {
           <Card className="summary-card">
             <span>本周有明确时间</span>
             <strong>
-              {stage2MockAnime.filter((anime) => anime.broadcast.normalizedIso).length}
+              {records.filter((item) => item.broadcast?.normalizedStartAt !== null).length}
             </strong>
             <Link href="/schedule">打开放送表</Link>
           </Card>
@@ -70,8 +73,8 @@ export default function HomePage() {
       <section className="page-section">
         <Card className="summary-card">
           <span>资料库入口</span>
-          <strong>10部虚构作品</strong>
-          <p>使用纯前端搜索与筛选骨架验证资料浏览信息架构，不提供正式全局搜索。</p>
+          <strong>{records.length}部虚构作品</strong>
+          <p>使用纯前端筛选验证资料浏览，阶段3仍不提供正式全文搜索。</p>
           <Link href="/library">进入资料库</Link>
         </Card>
       </section>

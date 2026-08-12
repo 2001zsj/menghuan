@@ -51,3 +51,7 @@ desktop.ini
 *.db
 *.sqlite
 *.sqlite3
+
+# Local PostgreSQL test data directories
+pgdata/
+.postgres/
