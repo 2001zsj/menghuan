@@ -1,10 +1,16 @@
 export {
   APP_ENV_VALUES,
+  DATA_REPOSITORY_VALUES,
   EnvironmentValidationError,
   LOG_LEVEL_VALUES,
   getEnvironment,
+  getServerEnvironment,
   parseEnvironment,
+  parseServerEnvironment,
+  requireDatabaseUrl,
   type AppEnvironment,
+  type DataRepositoryMode,
   type Environment,
   type LogLevel,
+  type ServerEnvironment,
 } from "./environment.js";

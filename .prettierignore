@@ -10,3 +10,5 @@ coverage
 playwright-report
 test-results
 pnpm-lock.yaml
+# Drizzle Kit generated migration metadata
+packages/database/drizzle/meta/

@@ -1,14 +1,15 @@
 "use client";
+
+import { broadcastStateLabel, type AnimePageData } from "@menghuan/domain";
 import { BroadcastItem, Card, EmptyState } from "@menghuan/ui";
-import type { Stage2MockAnime } from "@/mocks/stage2";
 import { formatBroadcastTime, timezoneLabel, type DisplayTimezone } from "@/lib/timezone";
-const stateLabels = { updated: "已更新", upcoming: "即将更新", tbd: "时间待定" } as const;
+
 export function BroadcastList({
   items,
   timezone,
   emptyTitle = "暂无条目",
 }: {
-  items: Stage2MockAnime[];
+  items: AnimePageData[];
   timezone: DisplayTimezone;
   emptyTitle?: string;
 }) {
@@ -19,19 +20,23 @@ export function BroadcastList({
         description="当前Mock筛选条件下没有条目，页面保留空状态以验证真实使用场景。"
       />
     );
+
   return (
     <Card className="broadcast-list">
-      {items.map((anime) => {
-        const time = formatBroadcastTime(anime.broadcast.normalizedIso, timezone);
+      {items.map((item) => {
+        const broadcast = item.broadcast;
+        const time = formatBroadcastTime(broadcast?.normalizedStartAt ?? null, timezone);
         return (
           <BroadcastItem
-            key={anime.id}
-            title={anime.title}
-            href={`/anime/${anime.slug}`}
-            status={stateLabels[anime.broadcast.state]}
+            key={item.anime.id}
+            title={item.anime.title}
+            href={`/anime/${item.anime.slug}`}
+            status={broadcast ? broadcastStateLabel(broadcast.availabilityState) : "时间待定"}
             convertedTime={time.isTbd ? "时间待定" : `${timezoneLabel(timezone)} ${time.text}`}
-            originalTime={anime.broadcast.originalText}
-            {...(anime.slug === "starlight-memo" ? { testId: "broadcast-time-cross-day" } : {})}
+            originalTime={broadcast?.originalExpression ?? "原始时间待定"}
+            {...(item.anime.slug === "starlight-memo"
+              ? { testId: "broadcast-time-cross-day" }
+              : {})}
           />
         );
       })}

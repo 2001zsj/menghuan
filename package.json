@@ -2,22 +2,26 @@
   "name": "menghuan",
   "version": "0.1.0",
   "private": true,
-  "description": "梦幻（Menghuan）阶段2设计系统、响应式导航与Mock页面骨架。",
+  "description": "梦幻（Menghuan）阶段3最小领域模型、PostgreSQL Schema与Repository统一边界。",
   "packageManager": "pnpm@10.34.5",
   "engines": {
     "node": ">=24.0.0 <25"
   },
   "scripts": {
     "dev": "pnpm dev:web",
-    "dev:web": "pnpm --filter @menghuan/config build && pnpm --filter @menghuan/web dev",
-    "build": "pnpm --filter @menghuan/config build && pnpm --filter @menghuan/sync-worker build && pnpm --filter @menghuan/web build",
+    "dev:web": "pnpm --filter @menghuan/domain build && pnpm --filter @menghuan/config build && pnpm --filter @menghuan/database build && pnpm --filter @menghuan/web dev",
+    "build": "pnpm --filter @menghuan/domain build && pnpm --filter @menghuan/config build && pnpm --filter @menghuan/database build && pnpm --filter @menghuan/sync-worker build && pnpm --filter @menghuan/web build",
     "lint": "eslint .",
-    "typecheck": "pnpm --filter @menghuan/config build && pnpm --filter @menghuan/ui typecheck && pnpm --filter @menghuan/sync-worker typecheck && pnpm --filter @menghuan/web typecheck",
+    "typecheck": "pnpm --filter @menghuan/domain build && pnpm --filter @menghuan/config build && pnpm --filter @menghuan/ui typecheck && pnpm --filter @menghuan/database build && pnpm --filter @menghuan/sync-worker typecheck && pnpm --filter @menghuan/web typecheck",
     "test": "vitest run",
-    "test:e2e": "pnpm --filter @menghuan/config build && playwright test",
+    "test:database": "pnpm --filter @menghuan/domain build && pnpm --filter @menghuan/config build && pnpm --filter @menghuan/database build && vitest run --config vitest.database.config.ts",
+    "test:e2e": "pnpm --filter @menghuan/domain build && pnpm --filter @menghuan/config build && pnpm --filter @menghuan/database build && playwright test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "health:worker": "pnpm --silent --filter @menghuan/config build && pnpm --silent --filter @menghuan/sync-worker exec tsx src/cli/health.ts"
+    "health:worker": "pnpm --silent --filter @menghuan/config build && pnpm --silent --filter @menghuan/sync-worker exec tsx src/cli/health.ts",
+    "db:generate": "pnpm --filter @menghuan/domain build && pnpm --filter @menghuan/database db:generate",
+    "db:migrate": "pnpm --filter @menghuan/domain build && pnpm --filter @menghuan/config build && pnpm --filter @menghuan/database db:migrate",
+    "db:seed": "pnpm --filter @menghuan/domain build && pnpm --filter @menghuan/config build && pnpm --filter @menghuan/database db:seed"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

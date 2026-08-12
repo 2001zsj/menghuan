@@ -1,6 +1,8 @@
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
+
 const projectRoot = fileURLToPath(new URL(".", import.meta.url));
+
 export default defineConfig({
   oxc: {
     jsx: {
@@ -10,6 +12,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@menghuan/config": `${projectRoot}packages/config/src/index.ts`,
+      "@menghuan/database": `${projectRoot}packages/database/src/index.ts`,
+      "@menghuan/domain": `${projectRoot}packages/domain/src/index.ts`,
       "@menghuan/ui": `${projectRoot}packages/ui/src/index.tsx`,
       "@": `${projectRoot}apps/web/src`,
     },
@@ -17,7 +21,12 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["apps/**/*.test.{ts,tsx}", "packages/**/*.test.{ts,tsx}"],
-    exclude: ["tests/e2e/**", "**/node_modules/**", "**/dist/**"],
+    exclude: [
+      "packages/database/test/**/*.integration.test.ts",
+      "tests/e2e/**",
+      "**/node_modules/**",
+      "**/dist/**",
+    ],
     coverage: { reporter: ["text", "html"] },
   },
 });

@@ -1,22 +1,24 @@
 "use client";
+
+import { animeMediaTypeLabel, animeReleaseStatusLabel, type AnimePageData } from "@menghuan/domain";
 import { AnimeCard } from "@menghuan/ui";
-import type { Stage2MockAnime } from "@/mocks/stage2";
 import { useFavorites } from "@/providers/favorites-provider";
-export function AnimeCardGrid({ items }: { items: Stage2MockAnime[] }) {
+
+export function AnimeCardGrid({ items }: { items: AnimePageData[] }) {
   const { isFavorite, toggleFavorite } = useFavorites();
   return (
     <div className="anime-grid">
-      {items.map((anime) => (
+      {items.map((item) => (
         <AnimeCard
-          key={anime.id}
-          title={anime.title}
-          alias={anime.alias}
-          href={`/anime/${anime.slug}`}
-          status={anime.status}
-          format={anime.format}
-          tags={anime.tags}
-          isFavorite={isFavorite(anime.id)}
-          onFavoriteToggle={() => toggleFavorite(anime.id)}
+          key={item.anime.id}
+          title={item.anime.title}
+          alias={item.anime.aliases[0] ?? ""}
+          href={`/anime/${item.anime.slug}`}
+          status={animeReleaseStatusLabel(item.anime.releaseStatus)}
+          format={animeMediaTypeLabel(item.anime.mediaType)}
+          tags={item.anime.tags}
+          isFavorite={isFavorite(item.anime.id)}
+          onFavoriteToggle={() => toggleFavorite(item.anime.id)}
         />
       ))}
     </div>

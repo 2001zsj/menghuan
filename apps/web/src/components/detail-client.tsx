@@ -1,11 +1,19 @@
 "use client";
+
+import {
+  animeMediaTypeLabel,
+  animeReleaseStatusLabel,
+  episodePublicationStatusLabel,
+  seasonQuarterLabel,
+  type AnimePageData,
+  type ResourceCategory,
+} from "@menghuan/domain";
 import { Badge, Card, FavoriteButton, PosterPlaceholder, SectionHeader } from "@menghuan/ui";
-import type { MockResourceCategory, Stage2MockAnime } from "@/mocks/stage2";
+import { formatBroadcastTime, timezoneLabel } from "@/lib/timezone";
 import { useFavorites } from "@/providers/favorites-provider";
 import { useUiPreferences } from "@/providers/ui-preferences-provider";
-import { formatBroadcastTime, timezoneLabel } from "@/lib/timezone";
 
-const resourceLabels: Record<MockResourceCategory, string> = {
+const resourceLabels: Record<ResourceCategory, string> = {
   official_site: "官方网站",
   official_social: "官方社交账号",
   official_video_channel: "官方视频频道",
@@ -20,30 +28,34 @@ const resourceLabels: Record<MockResourceCategory, string> = {
   approved_other: "其他经批准类别",
 };
 
-export function AnimeDetailClient({ anime }: { anime: Stage2MockAnime }) {
+export function AnimeDetailClient({ item }: { item: AnimePageData }) {
   const { isFavorite, toggleFavorite } = useFavorites();
   const { timezone } = useUiPreferences();
-  const time = formatBroadcastTime(anime.broadcast.normalizedIso, timezone);
+  const time = formatBroadcastTime(item.broadcast?.normalizedStartAt ?? null, timezone);
+  const alias = item.anime.aliases[0] ?? "";
+
   return (
     <>
       <section className="detail-hero">
         <div className="detail-poster">
-          <PosterPlaceholder title={anime.title} />
+          <PosterPlaceholder title={item.anime.title} />
         </div>
         <div className="detail-summary">
           <div className="detail-badges">
             <Badge tone="warning">完全虚构Mock</Badge>
-            <Badge>{anime.format}</Badge>
-            <Badge tone="success">{anime.status}</Badge>
+            <Badge>{animeMediaTypeLabel(item.anime.mediaType)}</Badge>
+            <Badge tone="success">{animeReleaseStatusLabel(item.anime.releaseStatus)}</Badge>
           </div>
-          <h1>{anime.title}</h1>
-          <p className="detail-alias">{anime.alias}</p>
-          <p>{anime.synopsis}</p>
+          <h1>{item.anime.title}</h1>
+          <p className="detail-alias">{alias}</p>
+          <p>{item.anime.synopsis}</p>
           <dl className="detail-facts">
             <div>
               <dt>季度</dt>
               <dd>
-                {anime.season.year}年{anime.season.quarter}季
+                {item.season
+                  ? `${item.season.year}年${seasonQuarterLabel(item.season.quarter)}季`
+                  : "季度待定"}
               </dd>
             </div>
             <div>
@@ -52,19 +64,22 @@ export function AnimeDetailClient({ anime }: { anime: Stage2MockAnime }) {
             </div>
             <div>
               <dt>原始表达</dt>
-              <dd>{anime.broadcast.originalText}</dd>
+              <dd>{item.broadcast?.originalExpression ?? "原始时间待定"}</dd>
             </div>
           </dl>
-          <FavoriteButton active={isFavorite(anime.id)} onClick={() => toggleFavorite(anime.id)} />
+          <FavoriteButton
+            active={isFavorite(item.anime.id)}
+            onClick={() => toggleFavorite(item.anime.id)}
+          />
         </div>
       </section>
       <section className="page-section">
         <SectionHeader title="STAFF" description="以下姓名均为界面演示所需的虚构人物。" />
         <Card className="definition-list">
-          {anime.staff.map((item) => (
-            <dl key={`${item.role}-${item.name}`}>
-              <dt>{item.role}</dt>
-              <dd>{item.name}</dd>
+          {item.staffCredits.map((credit) => (
+            <dl key={credit.id}>
+              <dt>{credit.role}</dt>
+              <dd>{credit.name}</dd>
             </dl>
           ))}
         </Card>
@@ -72,24 +87,28 @@ export function AnimeDetailClient({ anime }: { anime: Stage2MockAnime }) {
       <section className="page-section">
         <SectionHeader title="CAST" description="角色和配音人员均为虚构。" />
         <Card className="definition-list">
-          {anime.cast.map((item) => (
-            <dl key={`${item.character}-${item.performer}`}>
-              <dt>{item.character}</dt>
-              <dd>{item.performer}</dd>
+          {item.castCredits.map((credit) => (
+            <dl key={credit.id}>
+              <dt>{credit.characterName}</dt>
+              <dd>{credit.performerName}</dd>
             </dl>
           ))}
         </Card>
       </section>
       <section className="page-section">
-        <SectionHeader title="剧集列表骨架" description="阶段2不建立正式剧集数据库。" />
+        <SectionHeader title="剧集列表骨架" description="阶段3仅建立页面所需的最小剧集记录。" />
         <Card className="episode-list">
-          {anime.episodes.length ? (
-            anime.episodes.map((episode) => (
-              <article key={episode.number}>
-                <span>第{episode.number}话</span>
+          {item.episodes.length ? (
+            item.episodes.map((episode) => (
+              <article key={episode.id}>
+                <span>
+                  {episode.displayNumber === "完整篇"
+                    ? episode.displayNumber
+                    : `第${episode.displayNumber}话`}
+                </span>
                 <strong>{episode.title}</strong>
-                <Badge tone={episode.state === "已更新" ? "success" : "neutral"}>
-                  {episode.state}
+                <Badge tone={episode.publicationStatus === "published" ? "success" : "neutral"}>
+                  {episodePublicationStatusLabel(episode.publicationStatus)}
                 </Badge>
               </article>
             ))
@@ -101,10 +120,10 @@ export function AnimeDetailClient({ anime }: { anime: Stage2MockAnime }) {
       <section className="page-section">
         <SectionHeader
           title="外部资源分类骨架"
-          description="仅显示安全类别名称；阶段2不添加任何真实外链。"
+          description="仅显示安全类别名称；阶段3仍不添加任何真实外链。"
         />
         <div className="resource-grid">
-          {anime.resourceCategories.map((category) => (
+          {item.resourceCategories.map((category) => (
             <Card key={category} className="resource-placeholder">
               <strong>{resourceLabels[category]}</strong>
               <span>链接待核验，当前禁用</span>

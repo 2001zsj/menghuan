@@ -4,9 +4,9 @@
 
 ## 当前阶段
 
-当前源码为**Stage 2：全新设计系统、响应式导航和Mock页面骨架**。
+当前源码为**Stage 3：最小领域模型、PostgreSQL Schema、Drizzle与Mock Repository统一边界**。
 
-阶段2只使用10部完全虚构的Mock作品验证视觉、信息架构、本地偏好和本地收藏。它不接入真实来源，不代表正式数据库模型。
+界面继续使用同一组10部完全虚构作品。默认`mock`模式无需数据库；`database`模式用于验证同一业务数据通过PostgreSQL Repository返回，不能被理解为真实动漫来源。
 
 ## 环境要求
 
@@ -14,7 +14,7 @@
 - pnpm 10.34.5
 
 ```powershell
-corepack pnpm@10.34.5 install
+corepack pnpm@10.34.5 install --frozen-lockfile
 ```
 
 ## 开发
@@ -23,9 +23,7 @@ corepack pnpm@10.34.5 install
 pnpm dev
 ```
 
-默认Web地址为`http://localhost:3000`。
-
-主要Mock路由：
+默认Web地址为`http://localhost:3000`。主要路由仍为：
 
 - `/`
 - `/today`
@@ -34,16 +32,40 @@ pnpm dev
 - `/library`
 - `/anime/[slug]`
 - `/favorites`
-
-健康能力继续保留：
-
 - `/health`
 - `/api/health`
 
-## 检查
+## Repository模式
+
+默认使用内存Fixture Repository：
+
+```text
+MENGHUAN_DATA_REPOSITORY=mock
+```
+
+仅在服务器端数据库模式中配置：
+
+```text
+MENGHUAN_DATA_REPOSITORY=database
+DATABASE_URL=postgresql://...
+```
+
+数据库模式缺少合法`DATABASE_URL`会产生明确的Zod配置错误。变量不会通过`NEXT_PUBLIC_`暴露给浏览器，应用不会在启动或Build时自动迁移、种子。
+
+## 数据库命令
 
 ```powershell
-pnpm install
+pnpm db:generate
+pnpm db:migrate
+pnpm db:seed
+pnpm test:database
+```
+
+`test:database`只读取`TEST_DATABASE_URL`，使用隔离Schema并在结束后清理。不得指向Production或Preview数据库。
+
+## 质量检查
+
+```powershell
 pnpm install --frozen-lockfile
 pnpm format:check
 pnpm lint
@@ -52,26 +74,29 @@ pnpm test
 pnpm build
 pnpm health:worker
 pnpm test:e2e
+pnpm test:database
 ```
 
 ## 工作区
 
-- `apps/web`：Next.js App Router页面、Mock数据、本地偏好和收藏。
-- `apps/sync-worker`：Stage 1一次性健康Worker，未接入任何来源。
-- `packages/config`：服务端环境变量校验。
-- `packages/ui`：Stage 2全新设计令牌与基础组件。
-- `tests/e2e`：健康与Stage 2用户流程冒烟测试。
-- `docs/architecture`：工程基线和设计系统说明。
+- `apps/web`：Next.js App Router页面、服务器Repository组合根、本地偏好和收藏。
+- `apps/sync-worker`：健康Worker，仍未接入任何来源。
+- `packages/config`：Zod环境变量和Repository模式校验。
+- `packages/domain`：最小领域模型、共享Fixture与Repository契约。
+- `packages/database`：Drizzle PostgreSQL Schema、迁移、种子和Database Repository。
+- `packages/ui`：阶段2设计令牌与基础组件。
+- `tests/e2e`：健康与既有用户流程回归测试。
+- `docs/architecture`：工程、设计系统和数据边界说明。
 
-## 本地数据
+## 本地用户数据
 
 - UI偏好：`menghuan:ui-preferences:v1`
 - 收藏：`menghuan:favorites:v1`
 
-数据只保存在当前浏览器。没有账户、登录、Session、多设备同步或服务端用户数据API。
+这些数据只保存在当前浏览器。没有账户、登录、Session、多设备同步或服务端用户数据表。
 
 ## 当前明确未实现
 
-没有真实动漫资料、真实海报、YUC、AGE、外部抓取、PostgreSQL、Drizzle、Redis、正式搜索、最近浏览、观看进度、播放器、播放线路、下载入口、Docker、CI或部署配置。
+没有真实动漫资料、YUC、AGE、外部抓取、正式全文搜索、`pg_trgm`查询、Redis、账户、服务端收藏、最近浏览、观看进度、播放器、下载入口、Docker、CI或部署配置。
 
 GitHub提交、推送和部署由Codex在项目总指挥验收后执行；开发ChatGPT不得操作远程GitHub或部署。

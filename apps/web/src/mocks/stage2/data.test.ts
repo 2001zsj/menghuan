@@ -1,34 +1,24 @@
+import { RESOURCE_CATEGORIES, stage3AnimeFixture } from "@menghuan/domain";
 import { describe, expect, it } from "vitest";
-import { stage2MockAnime } from "./data";
-describe("Stage 2 mock data", () => {
+
+describe("Stage 3 shared fixture", () => {
   it("marks every record explicitly as mock", () => {
-    expect(stage2MockAnime.length).toBeGreaterThanOrEqual(8);
-    expect(stage2MockAnime.length).toBeLessThanOrEqual(12);
-    expect(stage2MockAnime.every((anime) => anime.isMock === true)).toBe(true);
+    expect(stage3AnimeFixture.length).toBeGreaterThanOrEqual(8);
+    expect(stage3AnimeFixture.length).toBeLessThanOrEqual(12);
+    expect(stage3AnimeFixture.every((item) => item.anime.isMock)).toBe(true);
   });
+
   it("contains no real external URLs or image URLs", () => {
-    const serialized = JSON.stringify(stage2MockAnime);
+    const serialized = JSON.stringify(stage3AnimeFixture);
     expect(serialized).not.toMatch(/https?:\/\//);
     expect(serialized).not.toMatch(/yuc|agefans|bangumi|bilibili/i);
   });
+
   it("uses only approved resource placeholder categories", () => {
-    const allowed = new Set([
-      "official_site",
-      "official_social",
-      "official_video_channel",
-      "broadcaster",
-      "verified_licensed_streaming",
-      "distributor",
-      "encyclopedia",
-      "rating_site",
-      "database",
-      "news",
-      "search",
-      "approved_other",
-    ]);
+    const allowed = new Set<string>(RESOURCE_CATEGORIES);
     expect(
-      stage2MockAnime
-        .flatMap((anime) => anime.resourceCategories)
+      stage3AnimeFixture
+        .flatMap((item) => item.resourceCategories)
         .every((category) => allowed.has(category)),
     ).toBe(true);
   });

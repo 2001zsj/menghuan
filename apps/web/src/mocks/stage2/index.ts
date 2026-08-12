@@ -1,8 +1,1 @@
-export { getMockAnimeBySlug, stage2MockAnime, stage2MockNotice } from "./data";
-export type {
-  MockAnimeFormat,
-  MockAnimeStatus,
-  MockBroadcastState,
-  MockResourceCategory,
-  Stage2MockAnime,
-} from "./types";
+export { STAGE3_FIXTURE_NOTICE, stage3AnimeFixture } from "@menghuan/domain";
