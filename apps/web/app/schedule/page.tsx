@@ -11,7 +11,7 @@ export default async function SchedulePage() {
       <MockBanner />
       <header className="page-header">
         <h1>每周放送表</h1>
-        <p>条目会按所选展示时区重新归入星期，跨日变化清晰可见。</p>
+        <p>当前季度记录按展示时区重新归入星期；深夜原文、跨日与未定时间分别保留。</p>
       </header>
       <ScheduleClient items={items} />
     </Container>

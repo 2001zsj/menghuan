@@ -7,7 +7,7 @@ import { SiteShell } from "@/components/site-shell";
 
 export const metadata: Metadata = {
   title: { default: "梦幻 · 梦境档案馆", template: "%s · 梦幻" },
-  description: "梦幻Stage 2全新设计系统与虚构Mock页面骨架。",
+  description: "梦幻Stage 4受控Fixture发现流程：今日更新、每周放送与季度新番。",
 };
 
 const themeBootScript = `(() => { try { const raw = localStorage.getItem('menghuan:ui-preferences:v1'); const value = raw ? JSON.parse(raw) : null; const theme = value && ['system','light','dark'].includes(value.theme) ? value.theme : 'system'; document.documentElement.dataset.theme = theme; } catch { document.documentElement.dataset.theme = 'system'; } })();`;

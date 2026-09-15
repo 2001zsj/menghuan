@@ -9,6 +9,7 @@ import {
   type ResourceCategory,
 } from "@menghuan/domain";
 import { Badge, Card, FavoriteButton, PosterPlaceholder, SectionHeader } from "@menghuan/ui";
+import { broadcastTimeState } from "@/lib/discovery";
 import { formatBroadcastTime, timezoneLabel } from "@/lib/timezone";
 import { useFavorites } from "@/providers/favorites-provider";
 import { useUiPreferences } from "@/providers/ui-preferences-provider";
@@ -32,6 +33,12 @@ export function AnimeDetailClient({ item }: { item: AnimePageData }) {
   const { isFavorite, toggleFavorite } = useFavorites();
   const { timezone } = useUiPreferences();
   const time = formatBroadcastTime(item.broadcast?.normalizedStartAt ?? null, timezone);
+  const timeState = broadcastTimeState(item.broadcast);
+  const displayTime = time.isTbd
+    ? timeState === "tentative"
+      ? "时间暂定"
+      : "时间未知"
+    : `${timezoneLabel(timezone)} ${time.text}${timeState === "known-tentative" ? "（暂定）" : ""}`;
   const alias = item.anime.aliases[0] ?? "";
 
   return (
@@ -60,7 +67,7 @@ export function AnimeDetailClient({ item }: { item: AnimePageData }) {
             </div>
             <div>
               <dt>展示时间</dt>
-              <dd>{time.isTbd ? "时间待定" : `${timezoneLabel(timezone)} ${time.text}`}</dd>
+              <dd>{displayTime}</dd>
             </div>
             <div>
               <dt>原始表达</dt>
@@ -96,7 +103,10 @@ export function AnimeDetailClient({ item }: { item: AnimePageData }) {
         </Card>
       </section>
       <section className="page-section">
-        <SectionHeader title="剧集列表骨架" description="阶段3仅建立页面所需的最小剧集记录。" />
+        <SectionHeader
+          title="剧集列表"
+          description="当前只展示领域模型中已有的受控Fixture剧集记录。"
+        />
         <Card className="episode-list">
           {item.episodes.length ? (
             item.episodes.map((episode) => (
@@ -119,8 +129,8 @@ export function AnimeDetailClient({ item }: { item: AnimePageData }) {
       </section>
       <section className="page-section">
         <SectionHeader
-          title="外部资源分类骨架"
-          description="仅显示安全类别名称；阶段3仍不添加任何真实外链。"
+          title="外部资源分类"
+          description="仅显示已批准的安全类别名称；当前不添加任何真实外链。"
         />
         <div className="resource-grid">
           {item.resourceCategories.map((category) => (

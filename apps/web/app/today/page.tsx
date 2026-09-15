@@ -11,7 +11,9 @@ export default async function TodayPage() {
       <MockBanner />
       <header className="page-header">
         <h1>今日更新</h1>
-        <p>按演示状态分组，同时展示换算时间和不可覆盖的原始来源时间。</p>
+        <p>
+          “今日”由Stage4受控Reference Instant在所选展示时区中的日历日期决定，不读取现实系统日期。
+        </p>
       </header>
       <TodayClient items={items} />
     </Container>

@@ -23,7 +23,7 @@ export function FavoritesClient({ records }: { records: AnimePageData[] }) {
       ) : (
         <EmptyState
           title="还没有收藏"
-          description="进入任意Mock详情页，主动点击“收藏”后才会出现在这里。"
+          description="进入任意受控Fixture详情页，主动点击“收藏”后才会出现在这里。"
         />
       )}
     </section>
