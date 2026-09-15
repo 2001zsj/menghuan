@@ -20,6 +20,7 @@ interface LegacyStage2Fixture {
   tags: string[];
   broadcast: {
     state: BroadcastState;
+    isTentative: boolean;
     originalExpression: string;
     originalDateText: string | null;
     originalTimeText: string | null;
@@ -47,6 +48,7 @@ const legacyStage2Fixture: LegacyStage2Fixture[] = [
     tags: ["幻想", "日常", "档案"],
     broadcast: {
       state: "updated",
+      isTentative: false,
       originalExpression: "日本时间 周一 23:00",
       originalDateText: "周一",
       originalTimeText: "23:00",
@@ -81,7 +83,8 @@ const legacyStage2Fixture: LegacyStage2Fixture[] = [
     tags: ["青春", "科幻", "悬疑"],
     broadcast: {
       state: "upcoming",
-      originalExpression: "日本时间 周二 00:30",
+      isTentative: true,
+      originalExpression: "日本时间 周二 00:30（暂定）",
       originalDateText: "周二",
       originalTimeText: "00:30",
       sourceTimezone: "Asia/Tokyo",
@@ -109,6 +112,7 @@ const legacyStage2Fixture: LegacyStage2Fixture[] = [
     tags: ["奇幻", "冒险", "治愈"],
     broadcast: {
       state: "upcoming",
+      isTentative: false,
       originalExpression: "北京时间 周三 20:00",
       originalDateText: "周三",
       originalTimeText: "20:00",
@@ -134,6 +138,7 @@ const legacyStage2Fixture: LegacyStage2Fixture[] = [
     tags: ["温情", "都市", "短篇"],
     broadcast: {
       state: "updated",
+      isTentative: false,
       originalExpression: "日本时间 周四 22:15",
       originalDateText: "周四",
       originalTimeText: "22:15",
@@ -159,7 +164,8 @@ const legacyStage2Fixture: LegacyStage2Fixture[] = [
     tags: ["太空", "悬疑", "心理"],
     broadcast: {
       state: "tbd",
-      originalExpression: "放送时间待定",
+      isTentative: false,
+      originalExpression: "具体放送时间未知",
       originalDateText: null,
       originalTimeText: null,
       sourceTimezone: null,
@@ -183,13 +189,14 @@ const legacyStage2Fixture: LegacyStage2Fixture[] = [
     mediaType: "tv",
     tags: ["校园", "奇谈", "成长"],
     broadcast: {
-      state: "upcoming",
-      originalExpression: "北京时间 周五 21:00",
+      state: "tbd",
+      isTentative: false,
+      originalExpression: "北京时间 周五 时间未知",
       originalDateText: "周五",
-      originalTimeText: "21:00",
+      originalTimeText: null,
       sourceTimezone: "Asia/Shanghai",
       sourceWeekday: "fri",
-      normalizedStartAt: "2026-07-31T13:00:00.000Z",
+      normalizedStartAt: null,
       broadcastType: "broadcast",
     },
     staff: [{ role: "监督", name: "许雾（虚构）" }],
@@ -209,6 +216,7 @@ const legacyStage2Fixture: LegacyStage2Fixture[] = [
     tags: ["航海", "冒险", "友情"],
     broadcast: {
       state: "upcoming",
+      isTentative: false,
       originalExpression: "日本时间 周六 18:30",
       originalDateText: "周六",
       originalTimeText: "18:30",
@@ -234,12 +242,13 @@ const legacyStage2Fixture: LegacyStage2Fixture[] = [
     tags: ["都市", "奇幻", "群像"],
     broadcast: {
       state: "upcoming",
-      originalExpression: "日本时间 周日 23:45",
+      isTentative: false,
+      originalExpression: "日本时间 周日 25:15",
       originalDateText: "周日",
-      originalTimeText: "23:45",
+      originalTimeText: "25:15",
       sourceTimezone: "Asia/Tokyo",
       sourceWeekday: "sun",
-      normalizedStartAt: "2026-08-02T14:45:00.000Z",
+      normalizedStartAt: "2026-08-02T16:15:00.000Z",
       broadcastType: "broadcast",
     },
     staff: [{ role: "监督", name: "久远时（虚构）" }],
@@ -259,6 +268,7 @@ const legacyStage2Fixture: LegacyStage2Fixture[] = [
     tags: ["海洋", "幻想", "剧情"],
     broadcast: {
       state: "updated",
+      isTentative: false,
       originalExpression: "网络公开时间：北京时间 19:00",
       originalDateText: null,
       originalTimeText: "19:00",
@@ -284,8 +294,9 @@ const legacyStage2Fixture: LegacyStage2Fixture[] = [
     tags: ["历史幻想", "旅途", "谜题"],
     broadcast: {
       state: "tbd",
-      originalExpression: "具体日期与时间待定",
-      originalDateText: null,
+      isTentative: true,
+      originalExpression: "2026年秋，具体放送时间暂定",
+      originalDateText: "2026年秋",
       originalTimeText: null,
       sourceTimezone: null,
       sourceWeekday: null,
@@ -361,8 +372,8 @@ function toAnimePageData(entry: LegacyStage2Fixture, index: number): AnimePageDa
       sourceWeekday: entry.broadcast.sourceWeekday,
       availabilityState: entry.broadcast.state,
       isPrimary: true,
-      isTentative: entry.broadcast.state === "tbd",
-      note: "Stage 3完全虚构Fixture，仅用于Repository与页面边界验证。",
+      isTentative: entry.broadcast.isTentative,
+      note: "Stage 4完全虚构Fixture，仅用于发现、时间与Repository边界验证。",
       dataStatus: "mock",
       createdAt,
       updatedAt: createdAt,
@@ -405,7 +416,10 @@ function toAnimePageData(entry: LegacyStage2Fixture, index: number): AnimePageDa
 }
 
 export const STAGE3_FIXTURE_NOTICE =
-  "当前页面使用Stage 3完全虚构Fixture，通过统一Repository提供，不代表真实动漫资料。";
+  "当前页面使用完全虚构Fixture，通过统一Repository提供，不代表真实动漫资料。";
+
+export const STAGE4_FIXTURE_NOTICE =
+  "当前页面使用10部完全虚构作品和受控演示时钟，仅用于验证发现与时间逻辑，不代表真实动漫资料或现实当天信息。";
 
 export const stage3AnimeFixture = animePageDataArraySchema.parse(
   legacyStage2Fixture.map(toAnimePageData),

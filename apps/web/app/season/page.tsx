@@ -11,7 +11,7 @@ export default async function SeasonPage() {
       <MockBanner />
       <header className="page-header">
         <h1>季度新番</h1>
-        <p>以视觉筛选骨架验证年份、季度、类型和状态的组合关系。</p>
+        <p>在当前、历史与未来季度之间切换；年份和季度选项均从受控Fixture的Season关系派生。</p>
       </header>
       <SeasonClient records={records} />
     </Container>

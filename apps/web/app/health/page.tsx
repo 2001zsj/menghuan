@@ -9,7 +9,7 @@ export default function HealthPage() {
     <Container className="page-shell">
       <header className="page-header">
         <h1>梦幻 Web 健康状态</h1>
-        <p>Stage 1健康能力在Stage 2中继续保留。</p>
+        <p>基础健康能力在当前阶段继续保留。</p>
       </header>
       <Card className="definition-list" aria-label="健康信息">
         <dl>

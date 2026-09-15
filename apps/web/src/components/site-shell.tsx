@@ -53,7 +53,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <span aria-hidden="true">◇</span>
             <span>
               <strong>梦幻</strong>
-              <small>梦境档案馆 · Stage 2</small>
+              <small>梦境档案馆 · Stage 4</small>
             </span>
           </Link>
           <div className="desktop-nav">
@@ -80,7 +80,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
       </main>
       <footer className="site-footer">
         <Container>
-          <p>梦幻 · Stage 2界面演示。所有作品与人物均为虚构Mock数据。</p>
+          <p>
+            梦幻 · Stage 4受控Fixture演示。所有作品与人物均为完全虚构内容，演示日期不代表现实当天。
+          </p>
         </Container>
       </footer>
       <Drawer open={open} title="梦幻导航" onClose={close}>

@@ -56,7 +56,7 @@ export function LibraryClient({ records }: { records: AnimePageData[] }) {
         ) : (
           <EmptyState
             title="没有匹配结果"
-            description="这是纯前端空结果状态；阶段3不会实现正式搜索索引。"
+            description="这是纯前端空结果状态；当前阶段不实现正式搜索索引。"
           />
         )}
       </section>

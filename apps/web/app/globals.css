@@ -542,3 +542,54 @@
     }
   }
 }
+
+/* Stage 4 discovery flow additions */
+.summary-grid--four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.summary-grid--compact {
+  margin-bottom: var(--mh-space-5);
+}
+.summary-card small {
+  display: block;
+  margin-top: var(--mh-space-2);
+  color: var(--mh-color-text-muted);
+  line-height: 1.55;
+}
+.broadcast-statuses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mh-space-2);
+  margin-bottom: var(--mh-space-2);
+}
+.season-mode {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mh-space-3);
+  margin-bottom: var(--mh-space-5);
+  padding: var(--mh-space-4);
+  border-left: 3px solid var(--mh-color-primary);
+  background: var(--mh-color-surface-subtle);
+}
+.season-mode p,
+.season-time-note {
+  margin: 0;
+  color: var(--mh-color-text-muted);
+}
+.season-time-note {
+  margin-bottom: var(--mh-space-4);
+}
+
+@media (max-width: 68rem) {
+  .summary-grid--four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 52rem) {
+  .summary-grid--four {
+    grid-template-columns: 1fr;
+  }
+}

@@ -97,7 +97,7 @@ test("weekday filter uses pressed buttons and shows expected cross-day change", 
 test("result pages keep card headings under named level-two sections", async ({ page }) => {
   await page.goto("/season");
   await expect(page.getByRole("heading", { level: 1, name: "季度新番" })).toHaveCount(1);
-  await expect(page.getByRole("heading", { level: 2, name: "Mock作品" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: /2026年夏季/ })).toBeVisible();
   await expect(page.locator(".mh-anime-card h3").first()).toBeVisible();
 
   await page.goto("/library");
