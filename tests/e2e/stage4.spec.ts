@@ -19,8 +19,10 @@ test("Stage 4 home enters controlled today flow on desktop", async ({ page }) =>
   const runtime = watchRuntimeFailures(page);
   await page.goto("/");
 
-  await expect(page.getByText("Stage 4 Fixture", { exact: true })).toBeVisible();
-  await expect(page.getByText(/不代表现实当天信息|不代表现实中的今天/).first()).toBeVisible();
+  await expect(page.getByText("演示资料 · 完全虚构作品", { exact: true })).toBeVisible();
+  await expect(
+    page.locator(".hero").getByText(/不代表现实当天信息|不代表现实中的今天/),
+  ).toBeVisible();
   await page.getByRole("link", { name: "查看今日更新", exact: true }).click();
   await expect(page).toHaveURL(/\/today$/);
 

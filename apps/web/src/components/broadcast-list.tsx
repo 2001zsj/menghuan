@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { broadcastStateLabel, type AnimePageData } from "@menghuan/domain";
 import { Badge, Card, EmptyState } from "@menghuan/ui";
 import {
@@ -9,6 +10,8 @@ import {
   sourceWeekdayLabel,
 } from "@/lib/discovery";
 import { formatBroadcastTime, timezoneLabel, type DisplayTimezone } from "@/lib/timezone";
+import { SyntheticSourceDetails } from "./synthetic-source-details";
+import { ReviewSourceDetails } from "./review-source-details";
 
 function displayStatus(item: AnimePageData): string {
   const state = broadcastTimeState(item.broadcast);
@@ -21,16 +24,19 @@ export function BroadcastList({
   items,
   timezone,
   emptyTitle = "暂无条目",
+  emptyAction = <a href="/schedule">查看其他放送日期</a>,
 }: {
   items: AnimePageData[];
   timezone: DisplayTimezone;
   emptyTitle?: string;
+  emptyAction?: ReactNode;
 }) {
   if (items.length === 0)
     return (
       <EmptyState
         title={emptyTitle}
-        description="当前受控Fixture筛选条件下没有条目，不会自动生成或猜测资料。"
+        description="当前筛选下暂无资料。未确认的时间不会自动补全。"
+        action={emptyAction}
       />
     );
 
@@ -98,6 +104,8 @@ export function BroadcastList({
                 </span>
               ) : null}
             </div>
+            <SyntheticSourceDetails source={item.syntheticSource} />
+            <ReviewSourceDetails source={item.reviewSource} />
           </article>
         );
       })}

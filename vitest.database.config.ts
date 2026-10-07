@@ -12,6 +12,7 @@ export default defineConfig({
     },
   },
   test: {
+    fileParallelism: false,
     environment: "node",
     include: ["packages/database/test/**/*.integration.test.ts"],
     sequence: { concurrent: false },

@@ -6,6 +6,7 @@ export interface DatabaseClientOptions {
   maxConnections?: number;
   prepare?: boolean;
   applicationName?: string;
+  localReviewNamespace?: "stage5_real";
 }
 
 export function createDatabaseClient(databaseUrl: string, options: DatabaseClientOptions = {}) {
@@ -14,6 +15,7 @@ export function createDatabaseClient(databaseUrl: string, options: DatabaseClien
     prepare: options.prepare ?? false,
     connection: {
       application_name: options.applicationName ?? "menghuan-stage3",
+      ...(options.localReviewNamespace ? { search_path: "stage5_real,public" } : {}),
     },
   });
   const db = drizzle(sql, { schema: stage3Schema });

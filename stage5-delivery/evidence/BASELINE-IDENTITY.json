@@ -1,0 +1,16 @@
+{
+  "stage": "Stage5 offline r3",
+  "stage4": {
+    "commit": "b12de8206bd3b7586e25f14e6b77d699b774d0a5",
+    "tree": "e76f694f281317f7c53cd443a2c36612d41ed23d",
+    "fileCount": 125
+  },
+  "r2": {
+    "zipSha256": "A50D1AA1BD198D996A2C300097918CDE769A78EA365E6CABF4EFE23D5855A59A",
+    "tree": "371f22748001d286ba36dd930c52841123ceef96",
+    "fileCount": 136
+  },
+  "realSourceAccess": false,
+  "remoteWrites": false,
+  "databaseWrites": false
+}

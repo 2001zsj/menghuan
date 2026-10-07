@@ -234,9 +234,11 @@ export function Skeleton({
 export function PosterPlaceholder({
   title,
   compact = false,
+  isMock = true,
 }: {
   title: string;
   compact?: boolean;
+  isMock?: boolean;
 }) {
   const initials = Array.from(title).slice(0, 2).join("");
   return (
@@ -249,7 +251,7 @@ export function PosterPlaceholder({
       <span className="mh-poster__initials" aria-hidden="true">
         {initials}
       </span>
-      <span className="mh-poster__caption">MOCK ARCHIVE</span>
+      <span className="mh-poster__caption">{isMock ? "MOCK ARCHIVE" : "LOCAL REVIEW"}</span>
     </div>
   );
 }
@@ -401,6 +403,7 @@ export function AnimeCard({
   tags,
   isFavorite,
   onFavoriteToggle,
+  isMock = true,
 }: {
   title: string;
   alias?: string;
@@ -410,15 +413,16 @@ export function AnimeCard({
   tags: string[];
   isFavorite?: boolean;
   onFavoriteToggle?: () => void;
+  isMock?: boolean;
 }) {
   return (
     <article className="mh-anime-card">
       <a className="mh-anime-card__poster-link" href={href} aria-label={`查看${title}详情`}>
-        <PosterPlaceholder title={title} />
+        <PosterPlaceholder title={title} isMock={isMock} />
       </a>
       <div className="mh-anime-card__body">
         <div className="mh-anime-card__meta">
-          <Badge tone="accent">Mock</Badge>
+          <Badge tone="accent">{isMock ? "Mock" : "本地评估"}</Badge>
           <Badge>{format}</Badge>
           <Badge tone="success">{status}</Badge>
         </div>

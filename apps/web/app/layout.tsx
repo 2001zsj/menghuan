@@ -4,6 +4,7 @@ import "@menghuan/ui/styles.css";
 import "./globals.css";
 import { AppProviders } from "@/providers/app-providers";
 import { SiteShell } from "@/components/site-shell";
+import { getServerEnvironment } from "@menghuan/config";
 
 export const metadata: Metadata = {
   title: { default: "梦幻 · 梦境档案馆", template: "%s · 梦幻" },
@@ -20,7 +21,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       </head>
       <body>
         <AppProviders>
-          <SiteShell>{children}</SiteShell>
+          <SiteShell localEvaluation={getServerEnvironment().MENGHUAN_REAL_REVIEW_MODE !== "off"}>
+            {children}
+          </SiteShell>
         </AppProviders>
       </body>
     </html>

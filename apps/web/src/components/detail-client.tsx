@@ -13,6 +13,8 @@ import { broadcastTimeState } from "@/lib/discovery";
 import { formatBroadcastTime, timezoneLabel } from "@/lib/timezone";
 import { useFavorites } from "@/providers/favorites-provider";
 import { useUiPreferences } from "@/providers/ui-preferences-provider";
+import { SyntheticSourceDetails } from "./synthetic-source-details";
+import { ReviewSourceDetails } from "./review-source-details";
 
 const resourceLabels: Record<ResourceCategory, string> = {
   official_site: "官方网站",
@@ -43,13 +45,25 @@ export function AnimeDetailClient({ item }: { item: AnimePageData }) {
 
   return (
     <>
-      <section className="detail-hero">
+      <section
+        className={`detail-hero${item.syntheticSource || item.reviewSource ? " detail-hero-synthetic" : ""}`}
+      >
         <div className="detail-poster">
-          <PosterPlaceholder title={item.anime.title} />
+          <PosterPlaceholder title={item.anime.title} isMock={item.anime.isMock} />
         </div>
         <div className="detail-summary">
           <div className="detail-badges">
-            <Badge tone="warning">完全虚构Mock</Badge>
+            <Badge tone="warning">
+              {item.reviewSource
+                ? item.reviewSource.dataNature === "real"
+                  ? "YUC · 本地评估"
+                  : item.reviewSource.dataNature === "synthetic-path-test"
+                    ? "合成路径测试"
+                    : "合成审核演示"
+                : item.syntheticSource
+                  ? "合成演示"
+                  : "完全虚构Mock"}
+            </Badge>
             <Badge>{animeMediaTypeLabel(item.anime.mediaType)}</Badge>
             <Badge tone="success">{animeReleaseStatusLabel(item.anime.releaseStatus)}</Badge>
           </div>
@@ -74,38 +88,48 @@ export function AnimeDetailClient({ item }: { item: AnimePageData }) {
               <dd>{item.broadcast?.originalExpression ?? "原始时间待定"}</dd>
             </div>
           </dl>
+          <SyntheticSourceDetails source={item.syntheticSource} />
+          <ReviewSourceDetails source={item.reviewSource} />
           <FavoriteButton
             active={isFavorite(item.anime.id)}
             onClick={() => toggleFavorite(item.anime.id)}
           />
         </div>
       </section>
-      <section className="page-section">
-        <SectionHeader title="STAFF" description="以下姓名均为界面演示所需的虚构人物。" />
-        <Card className="definition-list">
-          {item.staffCredits.map((credit) => (
-            <dl key={credit.id}>
-              <dt>{credit.role}</dt>
-              <dd>{credit.name}</dd>
-            </dl>
-          ))}
-        </Card>
-      </section>
-      <section className="page-section">
-        <SectionHeader title="CAST" description="角色和配音人员均为虚构。" />
-        <Card className="definition-list">
-          {item.castCredits.map((credit) => (
-            <dl key={credit.id}>
-              <dt>{credit.characterName}</dt>
-              <dd>{credit.performerName}</dd>
-            </dl>
-          ))}
-        </Card>
-      </section>
+      {!item.reviewSource || item.staffCredits.length > 0 ? (
+        <section className="page-section">
+          <SectionHeader title="STAFF" description="以下姓名均为界面演示所需的虚构人物。" />
+          <Card className="definition-list">
+            {item.staffCredits.map((credit) => (
+              <dl key={credit.id}>
+                <dt>{credit.role}</dt>
+                <dd>{credit.name}</dd>
+              </dl>
+            ))}
+          </Card>
+        </section>
+      ) : null}
+      {!item.reviewSource || item.castCredits.length > 0 ? (
+        <section className="page-section">
+          <SectionHeader title="CAST" description="角色和配音人员均为虚构。" />
+          <Card className="definition-list">
+            {item.castCredits.map((credit) => (
+              <dl key={credit.id}>
+                <dt>{credit.characterName}</dt>
+                <dd>{credit.performerName}</dd>
+              </dl>
+            ))}
+          </Card>
+        </section>
+      ) : null}
       <section className="page-section">
         <SectionHeader
           title="剧集列表"
-          description="当前只展示领域模型中已有的受控Fixture剧集记录。"
+          description={
+            item.reviewSource?.dataNature === "real"
+              ? "本轮未采集剧集资料，缺失信息保持未知。"
+              : "当前只展示领域模型中已有的受控Fixture剧集记录。"
+          }
         />
         <Card className="episode-list">
           {item.episodes.length ? (

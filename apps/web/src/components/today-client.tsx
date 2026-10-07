@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import type { AnimePageData } from "@menghuan/domain";
-import { Card, SectionHeader } from "@menghuan/ui";
+import { SectionHeader } from "@menghuan/ui";
 import { BroadcastList } from "@/components/broadcast-list";
 import { TimezoneControl } from "@/components/preference-controls";
 import {
@@ -32,41 +32,34 @@ export function TodayClient({ items }: { items: AnimePageData[] }) {
     <>
       <div className="timezone-summary" data-testid="today-reference-summary">
         <p>
-          当前展示：<strong>{timezoneLabel(timezone)}</strong> · 演示日期：
+          <strong>{timezoneLabel(timezone)}</strong> · 演示日期：
           <strong>{calendarDateLabelAt(STAGE4_REFERENCE_INSTANT, timezone)}</strong>
-          。这是受控Fixture 演示日，不代表现实中的今天。
         </p>
         <TimezoneControl />
       </div>
-      <div className="summary-grid summary-grid--compact" aria-label="今日更新统计">
-        <Card className="summary-card">
-          <span>已更新</span>
-          <strong>{updated.length}</strong>
-        </Card>
-        <Card className="summary-card">
-          <span>即将更新</span>
-          <strong>{upcoming.length}</strong>
-        </Card>
-        <Card className="summary-card">
-          <span>含暂定时间</span>
-          <strong>{tentative.length}</strong>
-        </Card>
+      <div className="discovery-counts" aria-label="今日更新统计">
+        <span>
+          已更新 <strong>{updated.length}</strong>
+        </span>
+        <span>
+          即将更新 <strong>{upcoming.length}</strong>
+        </span>
+        <span>
+          含暂定 <strong>{tentative.length}</strong>
+        </span>
       </div>
       <section className="page-section">
-        <SectionHeader title="已更新" description="只包含规范化日期能安全落在当前演示日的记录。" />
+        <SectionHeader title="已更新" />
         <BroadcastList items={updated} timezone={timezone} emptyTitle="演示日暂无已更新条目" />
       </section>
       <section className="page-section">
-        <SectionHeader
-          title="即将更新"
-          description="同一条记录可以同时标记为即将更新和时间暂定。"
-        />
+        <SectionHeader title="即将更新" />
         <BroadcastList items={upcoming} timezone={timezone} emptyTitle="演示日暂无即将更新条目" />
       </section>
       <section className="page-section">
         <SectionHeader
-          title="时间未能安全归日"
-          description="当前季度中没有规范化时刻的记录不会被猜测为今天，也不会生成00:00。"
+          title="时间未定"
+          description="本季尚无明确日期或时间的作品，不计入演示日。"
         />
         <BroadcastList items={unresolved} timezone={timezone} emptyTitle="没有无法安全归日的条目" />
       </section>

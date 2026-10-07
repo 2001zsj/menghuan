@@ -9,7 +9,8 @@
     "health": "tsx src/cli/health.ts"
   },
   "dependencies": {
-    "@menghuan/config": "workspace:*"
+    "@menghuan/config": "workspace:*",
+    "@menghuan/domain": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.13.3",

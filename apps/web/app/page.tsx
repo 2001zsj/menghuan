@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Card, Container, SectionHeader } from "@menghuan/ui";
 import { AnimeCardGrid } from "@/components/anime-card-grid";
 import { BroadcastList } from "@/components/broadcast-list";
-import { MockBanner } from "@/components/mock-banner";
 import {
   STAGE4_REFERENCE_INSTANT,
   calendarDateLabelAt,
@@ -13,6 +12,9 @@ import {
   todaySummary,
 } from "@/lib/discovery";
 import { getAnimeRepository } from "@/server/anime-repository";
+import { SyntheticBanner } from "@/components/synthetic-banner";
+
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const repository = await getAnimeRepository();
@@ -28,14 +30,12 @@ export default async function HomePage() {
 
   return (
     <Container className="page-shell">
-      <MockBanner />
+      <SyntheticBanner />
       <section className="hero" aria-labelledby="home-title">
         <div className="hero__content">
           <span className="hero__eyebrow">Dream Archive / Stage 4</span>
           <h1 id="home-title">在安静的档案中，找到下一部想看的作品。</h1>
-          <p>
-            本阶段用10部完全虚构作品验证首页、今日、周放送与季度发现流程。演示日期固定，可重复验证，不代表现实当天信息。
-          </p>
+          <p>在演示资料中浏览今日、每周与季度作品。演示日期固定，不代表现实当天信息。</p>
           <div className="hero__actions">
             <Link href="/today">查看今日更新</Link>
             <Link href="/season">查看季度新番</Link>

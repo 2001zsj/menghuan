@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-export const ANIME_MEDIA_TYPES = ["tv", "short", "movie"] as const;
-export const ANIME_RELEASE_STATUSES = ["airing", "finished", "upcoming"] as const;
+export const ANIME_MEDIA_TYPES = ["tv", "short", "movie", "unknown"] as const;
+export const ANIME_RELEASE_STATUSES = ["airing", "finished", "upcoming", "unknown"] as const;
 export const DATA_STATUSES = ["mock", "draft", "verified", "archived"] as const;
 export const SEASON_QUARTERS = ["winter", "spring", "summer", "autumn", "other"] as const;
 export const SEASON_TYPES = ["broadcast", "release", "other"] as const;

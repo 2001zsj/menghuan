@@ -39,7 +39,13 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   );
 }
 
-export function SiteShell({ children }: { children: ReactNode }) {
+export function SiteShell({
+  children,
+  localEvaluation = false,
+}: {
+  children: ReactNode;
+  localEvaluation?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const close = useCallback(() => setOpen(false), []);
   return (
@@ -81,7 +87,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
       <footer className="site-footer">
         <Container>
           <p>
-            梦幻 · Stage 4受控Fixture演示。所有作品与人物均为完全虚构内容，演示日期不代表现实当天。
+            {localEvaluation
+              ? "梦幻 · 仅限本机内部评估。基础10部演示作品完全虚构；新增资料性质以逐条来源标识为准，不代表公共展示准入。"
+              : "梦幻 · Stage 4受控Fixture演示。所有作品与人物均为完全虚构内容，演示日期不代表现实当天。"}
           </p>
         </Container>
       </footer>

@@ -1,0 +1,15 @@
+Stage5 offline r1 review reproduction
+Date: 2026-09-15
+
+Standards failures:
+1. Runtime contracts relied on TypeScript shapes and accepted malformed runtime values.
+2. Invalid calendar dates and invalid timezones could be marked known.
+3. URL validation did not strictly reject lookalike origins, credentials, non-default ports, and unapproved paths.
+
+Spec failures:
+1. Three overlapping calls produced maximum in-flight request concurrency 3.
+2. A timezone/tentative revision reused the old sourceRecordId and was discarded as duplicate.
+3. Invalid date/timezone data was classified as known.
+4. Unknown HTML structure returned successful empty data and reset the failure counter.
+
+The r2 test additions reproduce these failures before the implementation changes and pass after repair. No real YUC request was used.

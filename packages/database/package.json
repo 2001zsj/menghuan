@@ -16,6 +16,7 @@
     }
   },
   "scripts": {
+    "synthetic": "tsx src/cli/synthetic.ts",
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate --config drizzle.config.ts",
