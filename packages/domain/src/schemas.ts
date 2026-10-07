@@ -144,6 +144,45 @@ export const animeResourceCategorySchema = z.object({
 });
 
 export const animePageDataSchema = z.object({
+  reviewSource: z
+    .object({
+      kind: z.literal("review-mapped"),
+      dataNature: z.enum(["synthetic-test", "synthetic-path-test", "real"]),
+      label: z.enum([
+        "合成审核演示，非真实 YUC 资料",
+        "真实路径合成测试，非真实 YUC 资料",
+        "YUC 独立来源 / 非官方 · 本地评估",
+      ]),
+      sourcePageUrl: z.literal("https://yuc.wiki/202610/"),
+      sourceEnabled: z.boolean(),
+      adoptedFields: z.array(
+        z.enum(["title", "date", "time", "timezone", "year", "quarter", "status"]),
+      ),
+      originalExpression: z.string(),
+    })
+    .strict()
+    .refine(
+      (v) =>
+        v.label ===
+        (v.dataNature === "real"
+          ? "YUC 独立来源 / 非官方 · 本地评估"
+          : v.dataNature === "synthetic-path-test"
+            ? "真实路径合成测试，非真实 YUC 资料"
+            : "合成审核演示，非真实 YUC 资料"),
+      "Source nature/label mismatch",
+    )
+    .optional(),
+  syntheticSource: z
+    .object({
+      kind: z.literal("synthetic"),
+      entityId: z.string().min(1),
+      fixtureUrl: z.literal("https://example.org/menghuan/synthetic"),
+      targetExplanation: z.literal("YUC适配流程演示 · 非官方"),
+      originalExpression: z.string(),
+      mappingReason: z.string().min(5).max(500),
+    })
+    .strict()
+    .optional(),
   anime: animeSchema,
   season: seasonSchema.nullable(),
   animeSeason: animeSeasonSchema.nullable(),

@@ -1,0 +1,9 @@
+Stage5 r3 / 2026-10-01
+Historical r2 result is superseded by the r3 canonical validation evidence.
+Node 24.16.0, isolated pnpm 10.34.5.
+Working-copy initial frozen install: exit 0; 210 packages downloaded.
+YUC focused regression after repair: 31 tests passed.
+Canonical candidate re-extraction: frozen install, format:check, lint, typecheck, all Vitest, build in order.
+Full original command/output/exit logs and candidate identity are in the separately delivered r3 evidence ZIP and final report.
+Real YUC requests / DB writes / remote operations: 0.
+Database tests: not run (no database capability changes).

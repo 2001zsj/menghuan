@@ -26,12 +26,14 @@ const mediaTypeLabels: Record<AnimeMediaType, string> = {
   tv: "TV",
   short: "短篇",
   movie: "剧场版",
+  unknown: "类型未核验",
 };
 
 const releaseStatusLabels: Record<AnimeReleaseStatus, string> = {
   airing: "放送中",
   finished: "完结",
   upcoming: "未放送",
+  unknown: "放送状态未核验",
 };
 
 const broadcastStateLabels: Record<BroadcastState, string> = {

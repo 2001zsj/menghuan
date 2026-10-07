@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@menghuan/ui";
 import { AnimeDetailClient } from "@/components/detail-client";
 import { MockBanner } from "@/components/mock-banner";
+import { SyntheticBanner } from "@/components/synthetic-banner";
 import { getAnimeRepository } from "@/server/anime-repository";
 
 export default async function AnimeDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -12,7 +13,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ sl
 
   return (
     <Container className="page-shell">
-      <MockBanner />
+      {item.reviewSource ? null : item.syntheticSource ? <SyntheticBanner /> : <MockBanner />}
       <AnimeDetailClient item={item} />
     </Container>
   );

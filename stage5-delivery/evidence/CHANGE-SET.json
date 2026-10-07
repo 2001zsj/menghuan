@@ -1,0 +1,12 @@
+{
+  "r2ModifiedCode": [
+    "packages/domain/src/sources/yuc.ts",
+    "packages/domain/test/yuc-adapter.contract.test.ts"
+  ],
+  "deliveryChanges": "stage5-delivery reports, contract and evidence",
+  "stage4Modified": ["packages/domain/src/index.ts"],
+  "deleted": [],
+  "realYucRequests": 0,
+  "databaseWrites": 0,
+  "remoteWrites": 0
+}

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { AnimePageData } from "@menghuan/domain";
-import { SectionHeader, Tabs } from "@menghuan/ui";
+import { Button, SectionHeader, Tabs } from "@menghuan/ui";
 import { BroadcastList } from "@/components/broadcast-list";
 import { TimezoneControl } from "@/components/preference-controls";
 import {
@@ -35,29 +35,34 @@ export function ScheduleClient({ items }: { items: AnimePageData[] }) {
     [items],
   );
   const grouped = groups[day];
+  const nextDay = days.find((item) => groups[item.value].length > 0);
 
   return (
     <>
       <div className="timezone-summary">
         <p>
-          当前季度：<strong>2026年夏季</strong> · 当前按
-          <strong>{timezoneLabel(timezone)}</strong>重新计算星期。原始来源表达始终保留。
+          <strong>2026年夏季</strong> · <strong>{timezoneLabel(timezone)}</strong>
         </p>
         <TimezoneControl />
       </div>
       <Tabs label="选择星期" value={day} options={days} onChange={setDay} />
       <section className="page-section">
-        <SectionHeader
-          title={days.find((item) => item.value === day)?.label ?? "放送"}
-          description="同一天按当前展示时区中的时间升序排列；移动端继续使用纵向列表。"
+        <SectionHeader title={days.find((item) => item.value === day)?.label ?? "放送"} />
+        <BroadcastList
+          items={grouped}
+          timezone={timezone}
+          emptyTitle="这一天暂无演示放送"
+          emptyAction={
+            nextDay ? (
+              <Button onClick={() => setDay(nextDay.value)}>查看{nextDay.label}放送</Button>
+            ) : (
+              <a href="/season">查看季度作品</a>
+            )
+          }
         />
-        <BroadcastList items={grouped} timezone={timezone} emptyTitle="这一天暂无受控Fixture放送" />
       </section>
       <section className="page-section">
-        <SectionHeader
-          title="时间未定"
-          description="没有规范化时刻的当前季度记录不会被强行归入任何星期；时间暂定与时间未知分别展示。"
-        />
+        <SectionHeader title="时间未定" description="尚未确认的时间，不归入任何星期。" />
         <BroadcastList items={unresolved} timezone={timezone} emptyTitle="当前季度没有未定时间" />
       </section>
     </>

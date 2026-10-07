@@ -1,5 +1,9 @@
 import { getServerEnvironment } from "@menghuan/config";
 import { FixtureAnimeRepository, type AnimeRepository } from "@menghuan/domain";
+import { syntheticRepository } from "./synthetic-demo";
+import { reviewRepository } from "./review-demo";
+import { realReviewRepository } from "./real-review";
+import { previewReviewRepository } from "./preview-review";
 
 const fixtureRepository = new FixtureAnimeRepository();
 let databaseRepositoryPromise: Promise<AnimeRepository> | null = null;
@@ -20,6 +24,14 @@ async function createDatabaseRepository(databaseUrl: string): Promise<AnimeRepos
 
 export async function getAnimeRepository(): Promise<AnimeRepository> {
   const environment = getServerEnvironment();
+  const preview = await previewReviewRepository();
+  if (preview) return preview;
+  const real = await realReviewRepository();
+  if (real) return real;
+  const review = await reviewRepository();
+  if (review) return review;
+  const synthetic = await syntheticRepository();
+  if (synthetic) return synthetic;
   if (environment.MENGHUAN_DATA_REPOSITORY === "mock") return fixtureRepository;
 
   const databaseUrl = environment.DATABASE_URL;

@@ -12,11 +12,12 @@ export function AnimeCardGrid({ items }: { items: AnimePageData[] }) {
         <AnimeCard
           key={item.anime.id}
           title={item.anime.title}
+          isMock={item.anime.isMock}
           alias={item.anime.aliases[0] ?? ""}
           href={`/anime/${item.anime.slug}`}
           status={animeReleaseStatusLabel(item.anime.releaseStatus)}
           format={animeMediaTypeLabel(item.anime.mediaType)}
-          tags={item.anime.tags}
+          tags={item.reviewSource ? [item.reviewSource.label, ...item.anime.tags] : item.anime.tags}
           isFavorite={isFavorite(item.anime.id)}
           onFavoriteToggle={() => toggleFavorite(item.anime.id)}
         />

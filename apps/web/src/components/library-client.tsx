@@ -6,6 +6,10 @@ import { EmptyState, Select } from "@menghuan/ui";
 import { AnimeCardGrid } from "@/components/anime-card-grid";
 
 export function LibraryClient({ records }: { records: AnimePageData[] }) {
+  const localEvaluation = records.some(
+    (r) =>
+      r.reviewSource?.dataNature === "real" || r.reviewSource?.dataNature === "synthetic-path-test",
+  );
   const [query, setQuery] = useState("");
   const [format, setFormat] = useState("all");
   const [status, setStatus] = useState("all");
@@ -26,7 +30,7 @@ export function LibraryClient({ records }: { records: AnimePageData[] }) {
     <>
       <div className="toolbar">
         <label className="search-field toolbar__grow">
-          <span>搜索Mock标题、别名或标签</span>
+          <span>{localEvaluation ? "筛选本机标题、别名或标签" : "搜索Mock标题、别名或标签"}</span>
           <input
             type="search"
             value={query}

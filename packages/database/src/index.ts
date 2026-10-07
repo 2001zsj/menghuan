@@ -2,3 +2,8 @@ export * from "./client.js";
 export * from "./database-anime-repository.js";
 export * from "./schema.js";
 export * from "./seed.js";
+export * from "./synthetic-yuc-store.js";
+export * from "./synthetic-anime-repository.js";
+export * from "./review-mapped-store.js";
+export * from "./real-review-store.js";
+export * from "./local-identity.js";

@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS stage5_review_dispositions;
+DROP TABLE IF EXISTS stage5_review_contributions;
+DROP TABLE IF EXISTS stage5_review_adoptions;
+DROP TABLE IF EXISTS stage5_review_mappings;
+DROP TABLE IF EXISTS stage5_review_works;
+DROP TABLE IF EXISTS stage5_review_observation_history;
+DROP TABLE IF EXISTS stage5_review_observations;
+DROP TABLE IF EXISTS stage5_review_sessions;
